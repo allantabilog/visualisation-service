@@ -16,6 +16,12 @@ var (
 	fibs = make(map[int]int)
 )
 
+// todo: use bigger-sized integers
+type FibonacciResponse struct {
+	Key   int `json:"key"`
+	Value int `json:"value"`
+}
+
 func main() {
 	// setup a simple http server
 	const PORT = 8080
@@ -62,8 +68,10 @@ func handleFibonacciRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	FibonacciMemoised(n)
-	jsonResponse, err := json.Marshal(fibs)
+	result := FibonacciMemoised(n)
+	logger.Printf(`Dump of fib cache: %v\n`, fibs)
+	response := FibonacciResponse{Key: n, Value: result}
+	jsonResponse, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
