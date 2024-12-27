@@ -13,13 +13,13 @@ import (
 
 var (
 	logger = log.New(os.Stdout, "logger: ", log.Lshortfile)
-	fibs = make(map[int]int)
+	fibs = make(map[uint64]uint64)
 )
 
-// todo: use bigger-sized integers
 type FibonacciResponse struct {
-	Key   int `json:"key"`
-	Value int `json:"value"`
+	Key   uint64 `json:"key"`
+	Value uint64 `json:"value"`
+	Result string `json:"result"`
 }
 
 func main() {
@@ -68,9 +68,15 @@ func handleFibonacciRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := FibonacciMemoised(n)
+	fib := FibonacciMemoised(uint64(n))
 	logger.Printf(`Dump of fib cache: %v\n`, fibs)
-	response := FibonacciResponse{Key: n, Value: result}
+	var result string
+	if fib > 0 {
+		result = "success"
+	} else {
+		result = "failure"
+	}
+	response := FibonacciResponse{Key: uint64(n), Value: fib, Result: result}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -80,7 +86,7 @@ func handleFibonacciRequest(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
-func FibonacciMemoised(n int) int {
+func FibonacciMemoised(n uint64) uint64 {
 	logger.Printf("Calculating Fibonacci number for %v\n", n)
 	// check if the Fibonacci number is already memoised
 	if val, ok := fibs[n]; ok {
