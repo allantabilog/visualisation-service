@@ -12,16 +12,12 @@ import (
 
 var (
 	logger = log.New(os.Stdout, "logger: ", log.Lshortfile)
-<<<<<<< Updated upstream
-	fibs = make(map[uint64]uint64)
-=======
-	fibs   = make(map[int]int)
->>>>>>> Stashed changes
+	fibs   = make(map[uint64]uint64)
 )
 
 type FibonacciResponse struct {
-	Key   uint64 `json:"key"`
-	Value uint64 `json:"value"`
+	Key    uint64 `json:"key"`
+	Value  uint64 `json:"value"`
 	Result string `json:"result"`
 }
 
@@ -91,13 +87,7 @@ func handleFibonacciRequest(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
-<<<<<<< Updated upstream
 func FibonacciMemoised(n uint64) uint64 {
-=======
-// @todo: recursive fibonacci function is not efficient
-// transform it to an interative function
-func FibonacciMemoised(n int) int {
->>>>>>> Stashed changes
 	logger.Printf("Calculating Fibonacci number for %v\n", n)
 	// check if the Fibonacci number is already memoised
 	if val, ok := fibs[n]; ok {
