@@ -9,28 +9,8 @@ updates:
     directory: "/gomod"
     schedule:
       interval: "daily"
-    # auto-merge config for Go modules
-    auto-merge-settings:
-      enabled: true
-      require-all-status-checks: true
-      merge-strategy: "squash"
-      versioning-strategy: "auto"
-      # only allow auto-merge for minor and patch updates
-      ignore:
-        - dependency-name: "*"
-          update-types: ["version-update:semver-major"]
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
-    # auto-merge config for npm packages
-    auto-merge-settings:
-      enabled: true
-      require-all-status-checks: true
-      merge-strategy: "squash"
-      versioning-strategy: "auto"
-      # only allow auto-merge for minor and patch updates
-      ignore:
-        - dependency-name: "*"
-          update-types: ["version-update:semver-major"]
-
+    
