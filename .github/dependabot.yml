@@ -5,8 +5,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/gomod" # Location of package manifests
+  - package-ecosystem: "gomod"
+    directory: "/gomod"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "daily"
 
