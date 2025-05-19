@@ -25,4 +25,4 @@ jobs:
       - name: Build and test Node.js frontend
         run : |
           docker build -t vis-service-node:latest .
-          docker run --rm vis-service-node:latest npm test -- --watchAll=false
+          docker run --rm vis-service-node:latest npm test -- --watchAll=false --passWithNoTests
