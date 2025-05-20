@@ -3,6 +3,12 @@ name: Dependabot Auto-Merge
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  check_suite:
+    types: [completed]
+  workflow_run:
+    workflows: ["Build and Test"]
+    types:
+      - completed
 
 jobs:
     auto-merge:    
@@ -11,15 +17,30 @@ jobs:
         permissions:
             contents: write
             pull-requests: write
+            checks: read
         steps:
             - name: Dependabot metadata
               id: metdata 
               uses: dependabot/fetch-metadata@v1
               with:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
+            
+            - name: Wait for status checks
+              id: wait-for-status-checks
+              uses: lewagon/wait-on-check-action@v1.3.1
+              with:
+                ref: ${{ github.event.pull_request.head.sha }}
+                repo-token: ${{ secrets.GITHUB_TOKEN }}
+                wait-interval: 10
+                running-workflow-name: "Dependabot Auto-Merge"
+                check-name: "Build and Test"
+            
 
             - name: Enable auto-merge for minor and patch updates
-              if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
+              if: |
+                steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+                steps.metadata.outputs.update-type == 'version-update:semver-patch' &&
+                steps.wait-for-status-checks.outputs.conclusion == 'success'
               run: gh pr review --approve "$PR_URL" && gh pr merge --auto --squash "$PR_URL"
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
