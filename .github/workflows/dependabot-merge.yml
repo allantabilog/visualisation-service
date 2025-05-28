@@ -33,7 +33,7 @@ jobs:
                 repo-token: ${{ secrets.GITHUB_TOKEN }}
                 wait-interval: 10
                 running-workflow-name: "Dependabot Auto-Merge"
-                check-name: "Build and Test"
+                check-name: build
             
 
             - name: Enable auto-merge for minor and patch updates
