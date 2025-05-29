@@ -5,6 +5,7 @@ TODOs
 - Setup github workflow/s
 - Setup dependabot
 - Setup auto-merge for dependabot merges (for minor updates and patches only)
+  - test dependabot automerge
 - Develop front-end: visualiser of fibonacci sequences using d3.js
 - Re-organise the backend
   - interfaces
