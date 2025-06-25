@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -12,12 +13,14 @@ const (
 type DebugRouter struct {
 	mux    *http.ServeMux
 	routes []string
+	logger log.Logger
 }
 
 func NewDebugRouter() *DebugRouter {
 	return &DebugRouter{
 		mux:    http.NewServeMux(),
 		routes: []string{},
+		logger: *log.New(log.Writer(), "DebugRouter: ", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 }
 
@@ -28,14 +31,14 @@ func (dr *DebugRouter) HandleFunc(pattern string, handler http.HandlerFunc) {
 
 func (dr *DebugRouter) LogRoutes() {
 	for _, route := range dr.routes {
-		logger.Printf("Registered route: %s", route)
+		dr.logger.Printf("Registered route: %s", route)
 	}
 }
 func (dr *DebugRouter) ServeHTTPOnPort(port int) {
 	dr.LogRoutes()
-	logger.Printf("DebugRouter is serving on port %v\n", port)
+	dr.logger.Printf("DebugRouter is serving on port %v\n", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%v", port), dr.mux); err != nil {
-		logger.Fatalf("Failed to start server: %v", err)
+		dr.logger.Fatalf("Failed to start server: %v", err)
 	}
 }
 
