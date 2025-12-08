@@ -8,3 +8,4 @@ logger: 2025/06/25 15:38:10 debugRouter.go:31: Registered route: /fibonacci
 logger: 2025/06/25 15:38:10 debugRouter.go:31: Registered route: /
 logger: 2025/06/25 15:38:10 debugRouter.go:36: DebugRouter is serving on port 8080
 logger: 2025/06/25 15:38:10 debugRouter.go:38: Failed to start server: listen tcp :8080: bind: address already in use
+logger: 2025/06/25 20:57:15 main.go:37: Logging initialized. Log file: logs/fibonacci-server-2025-06-25.log

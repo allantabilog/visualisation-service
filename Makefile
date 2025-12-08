@@ -20,7 +20,7 @@ build-backend:
 # Build frontend
 build-frontend:
 	@echo "Building React frontend..."
-	npm install
+	pnpm install
 
 # Start both backend and frontend
 start: start-backend start-frontend
@@ -34,7 +34,7 @@ start-backend: build-backend
 # Start the frontend server
 start-frontend: build-frontend
 	@echo "Starting React frontend..."
-	npm start
+	pnpm start
 
 # Docker build and run
 docker: docker-backend docker-frontend
@@ -64,13 +64,13 @@ test-backend:
 # Test frontend
 test-frontend:
 	@echo "Testing React frontend..."
-	npm test -- --watchAll=false --passWithNoTests
+	pnpm test -- --watchAll=false --passWithNoTests
 
 # Clean build artifacts
 clean:
 	@echo "Cleaning build artifacts..."
 	cd $(GO_SERVER_DIR) && rm -f fibonacci-server
-	rm -rf node_modules build
+	rm -rf node_modules build pnpm-lock.yaml
 
 # Stop Docker containers if running
 docker-stop:

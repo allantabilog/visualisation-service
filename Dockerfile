@@ -2,12 +2,18 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+# Install pnpm
+RUN npm install -g pnpm
 
-RUN npm install 
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
 COPY . .  
 
-RUN npm run build 
+# Build the application
+RUN pnpm run build 
 
-CMD ["npm", "test"]
+CMD ["pnpm", "test"]
